@@ -10,7 +10,6 @@ class PublisherServlet(streamer: Streamer) extends ScalatraServlet {
 
   get("/health-check") {
     logger.info("Executing health check.")
-    ""
   }
 
   get("/start") {
