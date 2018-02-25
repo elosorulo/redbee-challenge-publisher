@@ -7,8 +7,6 @@ import com.redbee.challenge.publisher.streamer.Streamer
 import com.redbee.challenge.publisher.user.service.UserService
 import org.slf4j.LoggerFactory
 
-import scala.concurrent.ExecutionContext
-
 
 class StreamerImpl @Inject() (userService: UserService, provider: Provider) extends Streamer {
 

@@ -1,5 +1,5 @@
 package com.redbee.challenge.publisher.notification.api
 
-case class Notification (channel: String, content: Tweet)
+case class Notification (channel: String, content: TweetDto)
 
-case class Tweet(user: String, text: String)
+case class TweetDto(user: String, text: String)

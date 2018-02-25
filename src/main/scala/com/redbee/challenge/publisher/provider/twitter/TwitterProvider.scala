@@ -2,7 +2,10 @@ package com.redbee.challenge.publisher.provider.twitter
 
 import javax.inject.Inject
 
-import com.danielasfregola.twitter4s.TwitterRestClient
+import com.danielasfregola.twitter4s.entities.enums.{FilterLevel, Language}
+import com.danielasfregola.twitter4s.entities.{Tweet, User}
+import com.danielasfregola.twitter4s.entities.streaming.StreamingMessage
+import com.danielasfregola.twitter4s.{TwitterRestClient, TwitterStreamingClient}
 import com.redbee.challenge.publisher.notification.NotificationService
 import com.redbee.challenge.publisher.provider.Provider
 import com.redbee.challenge.publisher.user.api.BackendUser
@@ -13,19 +16,39 @@ import scala.util.{Failure, Success}
 
 class TwitterProvider @Inject() (notificationService: NotificationService) extends Provider {
 
-  implicit val executor = ExecutionContext.global
-
-  val logger = LoggerFactory.getLogger(getClass)
+  private implicit val executor = ExecutionContext.global
+  private val logger = LoggerFactory.getLogger(getClass)
+  private val restClient = TwitterRestClient()
+  private val streamingClient = TwitterStreamingClient()
 
   override def start(users: List[BackendUser]): Unit = {
     logger.info("Starting.")
-    val restClient = TwitterRestClient()
+
     val exec = restClient.users(users.map(u => u.userName), true)
 
     exec onComplete {
-      case Success(twitterUsers) => println(twitterUsers.data.foreach(u => println(s"Id: ${u.id}.")))
+      case Success(twitterUsers) =>
+        val twitterUserIds: Seq[Long] = twitterUsers.data.map(u => userId(u))
+        streamingClient.filterStatuses(follow = twitterUserIds, tracks = tracks(users),
+          languages = Seq(Language.English, Language.Spanish))(printTweetId())
       case Failure(t) =>
         logger.error(s"Error executing users operation on Twitter rest client. Message: ${t.getMessage}.")
+    }
+  }
+
+  private def tracks(users: List[BackendUser]): Seq[String] = {
+    users.flatMap(u => u.interests.hashTags)
+  }
+
+  private def userId(u: User): Long = {
+    println(s"Id: ${u.id}.")
+    u.id
+  }
+
+  private def printTweetId(): PartialFunction[StreamingMessage, Unit] = {
+    case tweet: Tweet => tweet.user match {
+      case Some(u) => if(u.followers_count > 10000) println(tweet.text)
+      case None =>
     }
   }
 

@@ -16,7 +16,7 @@ class UserServiceImpl extends UserService {
         userName = "pepe",
         email = "pepe@mail.com",
         interests = Interests(
-          profiles = List("leomessi"),
-          hashTags = List("politics"))))
+          profiles = List("realdonaldtrump"),
+          hashTags = List("politics", "illustration", "memes", "art", "netflix"))))
   }
 }
