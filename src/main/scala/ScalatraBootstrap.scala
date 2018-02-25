@@ -2,8 +2,12 @@ import com.redbee.challenge.publisher._
 import org.scalatra._
 import javax.servlet.ServletContext
 
-class ScalatraBootstrap extends LifeCycle {
+import com.redbee.challenge.publisher.config.Initializer
+import com.redbee.challenge.publisher.streamer.Streamer
+
+class ScalatraBootstrap extends LifeCycle with Initializer {
   override def init(context: ServletContext) {
-    context.mount(new PublisherServlet, "/*")
+    val streamer: Streamer = initialize()
+    context.mount(new PublisherServlet(streamer), "/*")
   }
 }

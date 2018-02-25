@@ -1,11 +1,26 @@
 package com.redbee.challenge.publisher
 
+import com.redbee.challenge.publisher.streamer.Streamer
 import org.scalatra._
+import org.slf4j.LoggerFactory
 
-class PublisherServlet extends ScalatraServlet {
+class PublisherServlet(streamer: Streamer) extends ScalatraServlet {
 
-  get("/") {
-    views.html.hello()
+  val logger = LoggerFactory.getLogger(getClass)
+
+  get("/health-check") {
+    logger.info("Executing health check.")
+    ""
+  }
+
+  get("/start") {
+    logger.info("Executing start request.")
+    streamer.start()
+  }
+
+  get("/stop") {
+    logger.info("Executing stop request.")
+    streamer.stop()
   }
 
 }
