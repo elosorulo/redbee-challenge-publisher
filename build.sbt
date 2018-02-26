@@ -17,7 +17,11 @@ libraryDependencies ++= Seq(
   "org.eclipse.jetty" % "jetty-webapp" % "9.4.8.v20171121" % "container",
   "javax.servlet" % "javax.servlet-api" % "3.1.0" % "provided",
   "net.codingwell" %% "scala-guice" % "4.1.0",
-  "com.danielasfregola" %% "twitter4s" % "5.5"
+  "com.danielasfregola" %% "twitter4s" % "5.5",
+  "io.circe" %% "circe-core" % "0.9.1",
+  "io.circe" %% "circe-generic" % "0.9.1",
+  "io.circe" %% "circe-parser" % "0.9.1",
+  "org.dispatchhttp" %% "dispatch-core" % "0.14.0"
 )
 
 enablePlugins(SbtTwirl)

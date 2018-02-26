@@ -1,7 +1,8 @@
 package com.redbee.challenge.publisher.notification
 
-import javax.management.Notification
+import com.redbee.challenge.publisher.notification.api.Notification
+
 
 trait NotificationService {
-  def publish(notification: Notification)
+  def publish(notifications: List[Notification])
 }

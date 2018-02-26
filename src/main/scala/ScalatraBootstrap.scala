@@ -9,5 +9,6 @@ class ScalatraBootstrap extends LifeCycle with Initializer {
   override def init(context: ServletContext) {
     val streamer: Streamer = initialize()
     context.mount(new PublisherServlet(streamer), "/*")
+    streamer.execute()
   }
 }
